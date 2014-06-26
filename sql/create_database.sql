@@ -1,0 +1,70 @@
+DROP TABLE IF EXISTS menu_food;
+DROP TABLE IF EXISTS menu;
+DROP TABLE IF EXISTS restaurant;
+DROP TABLE IF EXISTS food;
+DROP TABLE IF EXISTS address;
+
+
+CREATE TABLE IF NOT EXISTS `sql_excercise`.`food` (
+  `ID` INT(10) NOT NULL AUTO_INCREMENT,
+  `CALORIES` INT(10) NOT NULL,
+  `ISVEGAN` BIT(1) NOT NULL,
+  `NAME` VARCHAR(255) NOT NULL,
+  `PRICE` INT(10) NOT NULL,
+  PRIMARY KEY (`ID`));
+
+CREATE TABLE IF NOT EXISTS `sql_excercise`.`address` (
+  `ID` INT(10) NOT NULL AUTO_INCREMENT,
+  `CITY` VARCHAR(255) NOT NULL,
+  `COUNTRY` VARCHAR(255) NOT NULL,
+  `STREET` VARCHAR(255) NOT NULL,
+  `ZIPCODE` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`ID`));
+
+CREATE TABLE IF NOT EXISTS `sql_excercise`.`restaurant` (
+  `ID` INT(10) NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(255) NOT NULL,
+  `ADDRESS_ID` INT(10) NOT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `Address_ID_idx` (`ADDRESS_ID` ASC),
+  CONSTRAINT `Address_ID`
+    FOREIGN KEY (`ADDRESS_ID`)
+    REFERENCES `sql_excercise`.`address` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `sql_excercise`.`menu` (
+  `ID` INT(10) NULL AUTO_INCREMENT,
+  `Restaurant_ID` INT(10) NOT NULL,
+  `FROMDATE` DATETIME NULL,
+  `TODATE` DATETIME NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `Restaurant_ID_idx` (`Restaurant_ID` ASC),
+  CONSTRAINT `Restaurant_ID`
+    FOREIGN KEY (`Restaurant_ID`)
+    REFERENCES `sql_excercise`.`restaurant` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `sql_excercise`.`menu_food` (
+  `Menu_ID` INT(10) NOT NULL,
+  `foods_ID` INT(10) NOT NULL,
+  PRIMARY KEY (`Menu_ID`, `foods_ID`),
+  INDEX `foods_ID_idx` (`foods_ID` ASC),
+  CONSTRAINT `menu_ID`
+    FOREIGN KEY (`Menu_ID`)
+    REFERENCES `sql_excercise`.`menu` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `foods_ID`
+    FOREIGN KEY (`foods_ID`)
+    REFERENCES `sql_excercise`.`food` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+
+
+
+
+
